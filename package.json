@@ -1,8 +1,8 @@
 {
   "name": "@manyos/node-red-contrib-node-action",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Action In & Action Response for manyos SMILEaction framework.",
-  "node-red" : {
+  "node-red": {
     "nodes": {
       "node-action": "node-action.js"
     }

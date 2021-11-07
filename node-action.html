@@ -1,0 +1,108 @@
+/*
+* Based on the original node red httpin node
+*/
+
+<script type="text/html" data-template-name="action in">
+    <div class="form-row">
+        <label for="node-input-id"><i class="fa fa-globe"></i> <span data-i18n="actionin.label.id"></span></label>
+        <input id="node-input-id" type="text" placeholder="/actionId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]common.label.name">
+    </div>
+    <div class="form-row row-swagger-doc">
+        <label for="node-input-swaggerDoc"><i class="fa fa-file-text-o"></i> <span data-i18n="actionin.label.doc"></span></label>
+        <input type="text" id="node-input-swaggerDoc">
+    </div>
+    <div id="node-input-tip" class="form-tips"><span data-i18n="actionin.tip.in"></span><code><span id="node-input-path"></span></code>.</div>
+</script>
+
+<script type="text/html" data-template-name="action response">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]common.label.name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-statusCode"><i class="fa fa-long-arrow-left"></i> <span data-i18n="actionin.label.status"></span></label>
+        <input type="text" id="node-input-statusCode" placeholder="msg.statusCode">
+    </div>
+    <div class="form-tips"><span data-i18n="[html]actionin.tip.res"></span></div>
+</script>
+
+<script type="text/javascript">
+    (function() {
+        RED.nodes.registerType('action in',{
+            category: 'network',
+            color:"rgb(231, 231, 174)",
+            defaults: {
+                name: {value:""},
+                id: {value:"",required:true},
+                swaggerDoc: {type:"swagger-doc", required:false}
+            },
+            inputs:0,
+            outputs:1,
+            icon: "white-globe.svg",
+            label: function() {
+                if (this.name) {
+                    return this.name;
+                } else if (this.id) {
+                    var root = RED.settings.httpNodeRoot;
+                    if (root.slice(-1) != "/") {
+                        root = root+"/";
+                    }
+                    if (this.id.charAt(0) == "/") {
+                        root += this.id.slice(1);
+                    } else {
+                        root += this.id;
+                    }
+                    return "[smileAction] "+root;
+                } else {
+                    return "http";
+                }
+            },
+            labelStyle: function() {
+                return this.name?"node_label_italic":"";
+            },
+            oneditprepare: function() {
+                var root = RED.settings.httpNodeRoot;
+                if (root.slice(-1) == "/") {
+                    root = root.slice(0,-1);
+                }
+                if (root == "") {
+                    $("#node-input-tip").hide();
+                } else {
+                    $("#node-input-path").html(root);
+                    $("#node-input-tip").show();
+                }
+                if(!RED.nodes.getType("swagger-doc")){
+                    $('.row-swagger-doc').hide();
+                }
+            }
+
+        });
+
+        RED.nodes.registerType('action response',{
+            category: 'network',
+            color:"rgb(231, 231, 174)",
+            defaults: {
+                name: {value:""},
+                statusCode: {value:"",validate: RED.validators.number(true)},
+                headers: {value:{}}
+            },
+            inputs:1,
+            outputs:0,
+            align: "right",
+            icon: "white-globe.svg",
+            label: function() {
+                return this.name||("smileResponse"+(this.statusCode?" ("+this.statusCode+")":""));
+            },
+            labelStyle: function() {
+                return this.name?"node_label_italic":"";
+            },
+            oneditprepare: function() {},
+            oneditsave: function() {},
+            oneditresize: function(size) {}
+        });
+    })();
+</script>

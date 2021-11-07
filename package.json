@@ -1,0 +1,16 @@
+{
+  "name": "@manyos/node-red-contrib-node-action",
+  "version": "1.0.0",
+  "description": "Action In & Action Response for manyos SMILEaction framework.",
+  "node-red" : {
+    "nodes": {
+      "node-action": "node-action.js"
+    }
+  },
+  "keywords": [],
+  "author": "manyos technology GmbH",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0"
+  }
+}

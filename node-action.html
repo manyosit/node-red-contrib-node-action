@@ -47,7 +47,7 @@
                 if (this.name) {
                     return this.name;
                 } else if (this.id) {
-                    var root = RED.settings.httpNodeRoot;
+                    let root = RED.settings.httpNodeRoot;
                     if (root.slice(-1) != "/") {
                         root = root+"/";
                     }
@@ -58,21 +58,21 @@
                     }
                     return "[smileAction] "+root;
                 } else {
-                    return "http";
+                    return "smileAction";
                 }
             },
             labelStyle: function() {
                 return this.name?"node_label_italic":"";
             },
             oneditprepare: function() {
-                var root = RED.settings.httpNodeRoot;
+                let root = RED.settings.httpNodeRoot;
                 if (root.slice(-1) == "/") {
                     root = root.slice(0,-1);
                 }
                 if (root == "") {
                     $("#node-input-tip").hide();
                 } else {
-                    $("#node-input-path").html(root);
+                    $("#node-input-id").html(root);
                     $("#node-input-tip").show();
                 }
                 if(!RED.nodes.getType("swagger-doc")){
@@ -87,8 +87,7 @@
             color:"rgb(231, 231, 174)",
             defaults: {
                 name: {value:""},
-                statusCode: {value:"",validate: RED.validators.number(true)},
-                headers: {value:{}}
+                statusCode: {value:"",validate: RED.validators.number(true)}
             },
             inputs:1,
             outputs:0,
